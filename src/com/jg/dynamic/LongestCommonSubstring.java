@@ -22,7 +22,18 @@ public class LongestCommonSubstring {
                 }
             }
         }
+        print( T);
         return max;
+    }
+    
+    public static void print ( int[][] matrix ){
+    	for( int i = 0; i < matrix.length ; i++){
+    		for( int j = 0; j < matrix[i].length ; j++){
+    			System.out.print( matrix[i][j]+"  | " );
+    			
+    		}
+    		System.out.println("\n-------------------------");
+    	}
     }
     
     /**
@@ -48,8 +59,8 @@ public class LongestCommonSubstring {
     
     public static void main(String args[]){
         LongestCommonSubstring lcs = new LongestCommonSubstring();
-        char str1[] = "abcdef".toCharArray();
-        char str2[] = "zcdemf".toCharArray();
+        char str1[] = "Gaurav".toCharArray();
+        char str2[] = "Gaurav".toCharArray();
         System.out.println(lcs.longestCommonSubstring(str1, str2));
         System.out.println(lcs.longestCommonSubstringRec(str1, str2,str1.length-1, str2.length-1,false));
     }

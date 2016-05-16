@@ -8,6 +8,11 @@ package com.jg.string;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ http://www.geeksforgeeks.org/find-the-smallest-window-in-a-string-containing-all-characters-of-another-string/
+  http://articles.leetcode.com/finding-minimum-window-in-s-which/h
+ *
+ */
 public class SmallestWindowContaingAllCharacters {
 
     public String minWindow(String s, String t) {

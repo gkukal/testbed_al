@@ -1,4 +1,4 @@
-package com.jg.gk.dynamic;
+package com.jg.gk.util;
 
 public class Util {
 
