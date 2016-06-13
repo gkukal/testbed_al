@@ -1,7 +1,11 @@
 package com.jg.gk.dynamic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import com.jg.gk.util.Util;
 
 /**
  * Text Justification
@@ -46,11 +50,12 @@ public class LowestCostParagraph {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String line =  "Geeks for Geeks presents word wrap problem";
+		String line =  "Geeks for Geeks presents word wrap problem The extra spaces includes spaces put at the end of every line except the last one";
 		LowestCostParagraph obj = new LowestCostParagraph();
-		obj.m_lengthofLine = 15;
+		obj.m_lengthofLine = 20;
 		int[]  markers = new int[line.split(" ").length] ;
-		obj.lowestCostParagraph(line.split(" "), 0, markers , 0 );
+		Map<String,Double> map = new HashMap<String,Double>();
+		obj.lowestCostParagraph(line.split(" "), 0, markers , 0 , map);
 		
 		for( Integer marker : markers){
 			System.out.println( " Markers " + marker );
@@ -85,7 +90,7 @@ public class LowestCostParagraph {
 	
 	
 	
-	public double lowestCostParagraph( String [] words, int startIndex , int[] markers , int level ){
+	public double lowestCostParagraph( String [] words, int startIndex , int[] markers , int level , Map<String,Double> map ){
 		//Base condition 
 		if( startIndex >= words.length ) return 0 ;
 		
@@ -95,16 +100,37 @@ public class LowestCostParagraph {
 			if( lengthOfWords <0 && lengthOfWords == -2 ){
 				break;
 			}else{
-				double costOfPuttingTheWordsForThisLine =  Math.pow( new Double( m_lengthofLine - lengthOfWords) , 3.00d) ; 
-				double costOfAllOtherWords = lowestCostParagraph( words , startIndex + numOfWords + 1 , markers , level+1  );
+				double costOfPuttingTheWordsForThisLine =  Math.pow( new Double( m_lengthofLine - lengthOfWords) , 3.00d) ;
+				String key = ( startIndex + numOfWords + 1) + " L "+ (level+1);
+				double costOfAllOtherWords = 0.0;
+				if( map.containsKey( key )){
+					costOfAllOtherWords = map.get( key );
+				}else{
+					costOfAllOtherWords = lowestCostParagraph( words , startIndex + numOfWords + 1 , markers , level+1 , map );
+					try {
+						Double d = new Double( costOfAllOtherWords);
+						map.put( key, costOfAllOtherWords );
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						System.out.println( key );
+						System.out.println( map );
+						System.out.println( costOfAllOtherWords );
+						e.printStackTrace();
+					}
+				}
+				
 				double totalCost = costOfPuttingTheWordsForThisLine + costOfAllOtherWords ;
-				System.out.println( "numOfWords: "+numOfWords +" costOfPuttingTheWordsForThisLine "+ costOfPuttingTheWordsForThisLine +" costOfAllOtherWords "+ costOfAllOtherWords );
-				System.out.println( "TotalCost: "+totalCost +" Level "+ level);
+				Util.print(
+						"startIndex + numOfWords: "+numOfWords +" costOfPuttingTheWordsForThisLine "+ 
+				costOfPuttingTheWordsForThisLine +" costOfAllOtherWords "+ costOfAllOtherWords , level );
+				Util.print( "TotalCost: "+totalCost +" Level "+ level, level );
 				if( min ==0  ) {
 					min = totalCost;
+					markers[level] = startIndex + numOfWords ;
 				}else if( totalCost < min ) {
 					min =  totalCost;
 					markers[level] = startIndex + numOfWords ; //Marks the index of the last word taken
+					Util.print( "TotalCost: "+totalCost +" Level "+ level, level );
 				}
 			}
 		}
